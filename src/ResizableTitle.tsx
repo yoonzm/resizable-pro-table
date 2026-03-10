@@ -113,7 +113,7 @@ const ResizableTitle: React.FC<ResizableTitleProps> = ({
           bottom: 0,
           width: 12,
           cursor: 'col-resize',
-          zIndex: 10,
+          zIndex: 1,
         }}
         onMouseDown={handleMouseDown}
         onClick={(e) => e.stopPropagation()}
