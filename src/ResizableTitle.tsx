@@ -32,6 +32,7 @@ const ResizableTitle: React.FC<ResizableTitleProps> = ({
   ...restProps
 }) => {
   const thRef = useRef<HTMLTableCellElement>(null);
+  const handleRef = useRef<HTMLSpanElement>(null);
   const widthRef = useRef<number>(0);
 
   const handleMouseDown = useCallback(
@@ -42,6 +43,7 @@ const ResizableTitle: React.FC<ResizableTitleProps> = ({
       const th = thRef.current;
       if (!th) return;
 
+      const handle = handleRef.current;
       const startX = e.clientX;
       const startWidth = th.getBoundingClientRect().width;
       const cols = findCorrespondingCols(th);
@@ -63,7 +65,7 @@ const ResizableTitle: React.FC<ResizableTitleProps> = ({
         document.removeEventListener('mouseup', onMouseUp);
         document.body.style.userSelect = '';
         document.body.style.cursor = '';
-        document.body.classList.remove('resizing-active');
+        handle?.classList.remove('resizable-handle--active');
         onResizeEnd?.(widthRef.current);
 
         const suppressClick = (ev: MouseEvent) => {
@@ -78,7 +80,7 @@ const ResizableTitle: React.FC<ResizableTitleProps> = ({
 
       document.body.style.userSelect = 'none';
       document.body.style.cursor = 'col-resize';
-      document.body.classList.add('resizing-active');
+      handle?.classList.add('resizable-handle--active');
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
     },
@@ -97,6 +99,7 @@ const ResizableTitle: React.FC<ResizableTitleProps> = ({
     >
       {children}
       <span
+        ref={handleRef}
         className="resizable-handle"
         style={{
           position: 'absolute',

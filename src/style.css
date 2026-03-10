@@ -3,12 +3,10 @@
   position: relative;
   overflow: visible !important;
 }
-
 .ant-table-wrapper .ant-table-thead,
 .ant-table .ant-table-thead {
   overflow: visible !important;
 }
-
 /* Custom drag handle */
 .resizable-handle {
   position: absolute;
@@ -20,7 +18,6 @@
   z-index: 10;
   pointer-events: auto;
 }
-
 .resizable-handle::after {
   content: '';
   position: absolute;
@@ -31,11 +28,9 @@
   background: rgba(0, 0, 0, 0.08);
   transition: background 0.2s;
 }
-
 .resizable-handle:hover::after {
   background: #1677ff;
 }
-
 .resizable-handle--active::after {
   background: #1677ff;
 }
