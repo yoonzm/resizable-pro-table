@@ -1,15 +1,12 @@
 import { useMemo, useState } from 'react';
+import type { ColumnType } from 'antd/es/table';
 import type { ProColumns } from '@ant-design/pro-components';
 import ResizableTitle from './ResizableTitle';
-import type { ColumnWidthMap } from './types';
+import type { ColumnWidthMap, ResizableConfig } from './types';
 
-interface UseResizableColumnsOptions {
-  columnWidthPersistenceKey?: string;
-  minColumnWidth?: number;
-  defaultColumnWidth?: number;
-}
+type Components = { header: { cell: typeof ResizableTitle } };
 
-function getColumnKey<T>(col: ProColumns<T>): string | undefined {
+function getColumnKey<T>(col: ColumnType<T>): string | undefined {
   if (col.dataIndex !== undefined) {
     return ([] as string[]).concat(col.dataIndex as string | string[]).join('.');
   }
@@ -41,21 +38,29 @@ function safeWriteStorage(key: string, value: ColumnWidthMap): void {
 
 function useResizableColumns<T>(
   columns: ProColumns<T>[],
-  options?: UseResizableColumnsOptions,
+  resizableConfig?: ResizableConfig,
+): { mergedColumns: ProColumns<T>[]; components: Components };
+function useResizableColumns<T>(
+  columns: ColumnType<T>[],
+  resizableConfig?: ResizableConfig,
+): { mergedColumns: ColumnType<T>[]; components: Components };
+function useResizableColumns<T>(
+  columns: any[],
+  resizableConfig?: ResizableConfig,
 ) {
-  const { columnWidthPersistenceKey, minColumnWidth, defaultColumnWidth = 120 } = options ?? {};
+  const { persistenceKey, minWidth, maxWidth, defaultWidth = 120 } = resizableConfig ?? {};
 
   const [columnWidths, setColumnWidths] = useState<ColumnWidthMap>(() =>
-    columnWidthPersistenceKey ? safeReadStorage(columnWidthPersistenceKey) : {},
+    persistenceKey ? safeReadStorage(persistenceKey) : {},
   );
 
-  const mergedColumns = useMemo<ProColumns<T>[]>(
+  const mergedColumns = useMemo(
     () =>
       columns.map((col) => {
         const colKey = getColumnKey(col);
         const effectiveWidth =
           colKey !== undefined
-            ? (columnWidths[colKey] ?? (col.width as number | undefined) ?? defaultColumnWidth)
+            ? (columnWidths[colKey] ?? (col.width as number | undefined) ?? defaultWidth)
             : (col.width as number | undefined);
 
         if (colKey === undefined) {
@@ -67,13 +72,14 @@ function useResizableColumns<T>(
           width: effectiveWidth,
           onHeaderCell: () => ({
             width: effectiveWidth,
-            minWidth: minColumnWidth,
-            style: { width: effectiveWidth, minWidth: minColumnWidth ?? 60 },
+            minWidth,
+            maxWidth,
+            style: { width: effectiveWidth, minWidth: minWidth ?? 60 },
             onResizeEnd: (finalWidth: number) => {
               setColumnWidths((prev) => {
                 const next = { ...prev, [colKey]: finalWidth };
-                if (columnWidthPersistenceKey) {
-                  safeWriteStorage(columnWidthPersistenceKey, next);
+                if (persistenceKey) {
+                  safeWriteStorage(persistenceKey, next);
                 }
                 return next;
               });
@@ -81,7 +87,7 @@ function useResizableColumns<T>(
           }),
         };
       }),
-    [columns, columnWidths, minColumnWidth, columnWidthPersistenceKey, defaultColumnWidth],
+    [columns, columnWidths, minWidth, maxWidth, persistenceKey, defaultWidth],
   );
 
   const components = useMemo(

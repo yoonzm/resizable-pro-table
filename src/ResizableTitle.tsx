@@ -28,6 +28,7 @@ const ResizableTitle: React.FC<ResizableTitleProps> = ({
   onResizeEnd,
   width,
   minWidth = 60,
+  maxWidth,
   children,
   ...restProps
 }) => {
@@ -51,7 +52,11 @@ const ResizableTitle: React.FC<ResizableTitleProps> = ({
       widthRef.current = startWidth;
 
       const onMouseMove = (ev: MouseEvent) => {
-        const newWidth = Math.max(minWidth, startWidth + (ev.clientX - startX));
+        const rawWidth = startWidth + (ev.clientX - startX);
+        const newWidth = Math.max(
+          minWidth,
+          maxWidth !== undefined ? Math.min(maxWidth, rawWidth) : rawWidth,
+        );
         th.style.width = `${newWidth}px`;
         cols.forEach((col) => {
           col.style.width = `${newWidth}px`;
@@ -84,7 +89,7 @@ const ResizableTitle: React.FC<ResizableTitleProps> = ({
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
     },
-    [minWidth, onResizeEnd],
+    [minWidth, maxWidth, onResizeEnd],
   );
 
   if (!width || !onResizeEnd) {
