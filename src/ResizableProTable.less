@@ -9,6 +9,12 @@
   overflow: visible !important;
 }
 
+/* Fixed columns must stay above non-fixed column drag handles (z-index: 10) */
+.ant-table-thead > tr > th.ant-table-cell-fix-left,
+.ant-table-thead > tr > th.ant-table-cell-fix-right {
+  z-index: 11 !important;
+}
+
 /* Custom drag handle */
 .resizable-handle {
   position: absolute;
