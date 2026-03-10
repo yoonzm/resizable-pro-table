@@ -1,0 +1,41 @@
+/* Make header cells the positioning parent for the handle */
+.ant-table-thead > tr > th {
+  position: relative;
+  overflow: visible !important;
+}
+
+.ant-table-wrapper .ant-table-thead,
+.ant-table .ant-table-thead {
+  overflow: visible !important;
+}
+
+/* Custom drag handle */
+.resizable-handle {
+  position: absolute;
+  right: -6px;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  cursor: col-resize;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.resizable-handle::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 15%;
+  height: 70%;
+  width: 2px;
+  background: rgba(0, 0, 0, 0.08);
+  transition: background 0.2s;
+}
+
+.resizable-handle:hover::after {
+  background: #1677ff;
+}
+
+.resizing-active .resizable-handle::after {
+  background: #1677ff;
+}

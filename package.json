@@ -1,0 +1,50 @@
+{
+  "name": "resizable-pro-table",
+  "version": "1.0.0",
+  "description": "ProTable with resizable columns for Ant Design",
+  "author": "yinzhimin",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./dist/style.css": "./dist/style.css"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup && lessc src/ResizableProTable.less dist/style.css",
+    "dev": "tsup --watch"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0",
+    "antd": ">=5.0.0",
+    "@ant-design/pro-components": ">=2.0.0"
+  },
+  "devDependencies": {
+    "@ant-design/pro-components": "^2.4.4",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "antd": "^5.4.0",
+    "less": "^4.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "ant-design",
+    "pro-table",
+    "resizable",
+    "column-resize",
+    "table"
+  ]
+}
