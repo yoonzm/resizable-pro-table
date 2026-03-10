@@ -9,4 +9,5 @@ export default defineConfig({
   clean: true,
   external: ['react', 'react-dom', 'antd', '@ant-design/pro-components'],
   outDir: 'dist',
+  injectStyle: true,
 });

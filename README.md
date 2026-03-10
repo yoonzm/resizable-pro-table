@@ -22,7 +22,6 @@ pnpm add resizable-pro-table
 
 ```tsx
 import ResizableProTable from 'resizable-pro-table';
-import 'resizable-pro-table/dist/style.css';
 
 <ResizableProTable<YourDataType>
   columns={columns}
